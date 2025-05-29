@@ -1,0 +1,80 @@
+
+* {
+    font-family: sans-serif;
+}
+
+:root {
+    --background: #fafafa;
+    --bg-primary: #f9f9f955;
+    --bg-secondary: #e4e4e7;
+
+    --primary: #111827;
+    --secondary: #374151;
+    --accent: #f97316;
+}
+
+[color-scheme='dark'] {
+    color-scheme: dark;
+
+    --background: #09090b;
+    --bg-primary: #111114bb;
+    --bg-secondary: #27272a;
+
+    --primary: #ffffff;
+    --secondary: #d1d5db;
+    --accent: #f97316;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+
+        --background: #09090b;
+        --bg-primary: #111114bb;
+        --bg-secondary: #27272a;
+
+        --primary: #ffffff;
+        --secondary: #d1d5db;
+        --accent: #f97316;
+    }
+}
+
+[color-scheme='light'] {
+    color-scheme: light;
+
+    --background: #fafafa;
+    --bg-primary: #f9f9f955;
+    --bg-secondary: #e4e4e7;
+
+    --primary: #111827;
+    --secondary: #374151;
+    --accent: #f97316;
+
+}
+
+
+html, body {
+    background: var(--background);
+}
+
+body {
+    height: 100%;
+    z-index: -1;
+}
+
+.btn {
+
+}
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--bg-primary);
+    text-decoration: none;
+    border-radius: 8px;
+    color: var(--primary);
+    border: 3px solid var(--bg-secondary);
+}
+.btn:hover, .btn:hover {
+    cursor: pointer;
+    border-color: var(--accent);
+}

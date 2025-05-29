@@ -1,0 +1,34 @@
+
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    networks:
+      - default
+      - traefik-public
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - ./data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-public"
+      # Main domain router
+      - "traefik.http.routers.bso.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.bso.tls=true"
+      - "traefik.http.routers.bso.entrypoints=websecure"
+      - "traefik.http.routers.bso.tls.certresolver=letsencryptresolver"
+      - "traefik.http.services.bso.loadbalancer.server.port=3000"
+      # www subdomain router with redirect
+      - "traefik.http.routers.bso-www.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.bso-www.tls=true"
+      - "traefik.http.routers.bso-www.entrypoints=websecure"
+      #- "traefik.http.routers.klemenpl-www.tls.certresolver=letsencryptresolver"
+      - "traefik.http.routers.bso-www.middlewares=www-redirect"
+
+networks:
+  traefik-public:
+    external: true
