@@ -211,6 +211,13 @@ void init_mqtt()
 
 void vLaunch( void )
 {
+    /* Unlock the device after card authentication. */
+    read_new_card();
+    if (!authenticate_card())
+    {
+        return;
+    }
+
     init_mqtt();
 
     /* Create the queue. */
@@ -308,7 +315,7 @@ static void prvGasSensorTask( void *pvParameters )
 
         uint32_t gas_sensor_value = read_analog_pin(mainMQ7_GAS_SENSOR_ADC_PIN);
         printf("Gas Sensor Value: %ld\n", gas_sensor_value);
-		// /* Send to the queue */
+		/* Send to the queue */
 		xQueueSendToBack( gasQueue, &gas_sensor_value, 0U );
 	}
 }
