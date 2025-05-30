@@ -14,7 +14,9 @@ process_message() {
   local topic="$1"
   local value="$2"
 
-  local key_file="$TMP_DIR/$(echo "$topic" | tr '/' '_')"
+  # Remove leading slash and replace slashes with underscores for filename
+  local topic_key="${topic#/}"  # Remove leading slash
+  local key_file="$TMP_DIR/$(echo "$topic_key" | tr '/' '_')"
 
   # Append value to file
   echo "$value" >> "$key_file"
@@ -30,7 +32,7 @@ process_message() {
     avg=$(awk '{sum+=$1} END {if (NR>0) print sum/NR}' "$key_file")
 
     # Extract topic parts
-    IFS='/' read -r device_id sensor sensor_measurement <<< "$topic"
+    IFS='/' read -r _ device_id sensor sensor_measurement <<< "$topic"
 
     # Timestamp
     timestamp=$(date +%s)
@@ -61,7 +63,7 @@ EOF
 # Listen and process MQTT messages
 mosquitto_sub -v -h "$MQTT_BROKER" -p "$MQTT_PORT" -t "$TOPIC" | while read -r topic value; do
   # Check topic format: device/sensor/measurement
-  if [[ "$topic" =~ ^[^/]+/[^/]+/[^/]+$ && "$value" =~ ^[0-9.]+$ ]]; then
+  if [[ "$topic" =~ ^/[^/]+/[^/]+/[^/]+$ && "$value" =~ ^[0-9.]+$ ]]; then
     process_message "$topic" "$value"
   else
     echo "Unknown topic: $topic"
