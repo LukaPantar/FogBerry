@@ -57,6 +57,9 @@ EOF
       -d "$json" https://bso.moj-plac.si/api/v1/submit
 
     echo "Sent average for $topic: $avg"
+
+    # Clear the file after sending
+    > "$key_file"
   fi
 }
 
