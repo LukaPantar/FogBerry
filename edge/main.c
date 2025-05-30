@@ -327,6 +327,7 @@ static void publishQueue(QueueHandle_t queue, char topic[])
     {
         uint32_t value;
         xQueueReceive(queue, &value, portMAX_DELAY);
+        vTaskDelay( mainSEND_DELAY_MS );  // Small delay to deliver everything
         publish_value(&state, topic, value);
     }
 }
@@ -341,12 +342,12 @@ static void prvQueueSendTask( void *pvParameters )
     {
         if (uxQueueMessagesWaiting(lightQueue) >= mainQUEUE_THRESHOLD)
         {
-            publishQueue(lightQueue, "/light");
+            publishQueue(lightQueue, "/ADA161/light");
             xQueueReset(lightQueue);
         }
-        if (uxQueueMessagesWaiting(gasQueue) >= mainQUEUE_THRESHOLD)
+        else if (uxQueueMessagesWaiting(gasQueue) >= mainQUEUE_THRESHOLD)
         {
-            publishQueue(gasQueue, "/gas");
+            publishQueue(gasQueue, "/MQ-7/gas");
             xQueueReset(gasQueue);
         }
 

@@ -63,12 +63,13 @@ typedef struct {
 #define	mainGAS_SENSOR_TASK_PRIORITY		( tskIDLE_PRIORITY + 1 )
 #define	mainQUEUE_SEND_TASK_PRIORITY		( tskIDLE_PRIORITY + 2 )
 
-#define mainSENSOR_SAMPLE_FREQUENCY_MS	    ( 1000 / portTICK_PERIOD_MS )
-#define mainQUEUE_SEND_FREQUENCY_MS	        ( 2000 / portTICK_PERIOD_MS )
+#define mainSENSOR_SAMPLE_FREQUENCY_MS	    ( 2000 / portTICK_PERIOD_MS )
+#define mainQUEUE_SEND_FREQUENCY_MS	        ( 3000 / portTICK_PERIOD_MS )
+#define mainSEND_DELAY_MS	                ( 300 / portTICK_PERIOD_MS )
 
 /* The number of items the queue can hold. */
 #define mainQUEUE_LENGTH					( 10 )
 /* When is the queue send. */
-#define mainQUEUE_THRESHOLD                 ( 5 )
+#define mainQUEUE_THRESHOLD                 ( 3 )
 
 #endif /* MAIN_H */
